@@ -69,7 +69,8 @@ Contains the following information for titles:
     – Note that the types and attributes are referred to as an array,
     but this is not true. There seems to be only one line
 	  for each titleId and order pair. Many of these fields contain "\\N".
-  - example:```
+  - example:
+  ```
   titleId	ordering	title	region	language	types	attributes	isOriginalTitle
   tt13683856	1	Под землёй	RU	\N	imdbDisplay	\N	0
   tt13683856	2	Storgetnya	\N	\N	original	\N	1
@@ -104,7 +105,8 @@ Contains the tv episode information. Fields include:
   **Notes:**
   - parentTconst (string) - It may appear that all the available episode IDs(tconst) 
     of one of the "the parent TV Series"(parentTconst) are clustered together, but this is incorrect.
-  - example:```
+  - example:
+  ```
   tconst	parentTconst	seasonNumber	episodeNumber
   tt9496884	tt0316967	\N	\N
   tt9496888	tt2143123	8	7
@@ -129,13 +131,15 @@ Contains the principal cast/crew for titles
   - tconsts (string) - In reality unique identifiers are placed in increasing order and
     **lines can be duplicated(have the same tconst(title))**
     **because different nconst(name/person) can be included in the same tconst(title).**
-  - example:```
+  - example:
+  ```
   tconst	ordering	nconst	category	job	characters
   tt0000001	1	nm1588970	self	\N	["Self"]
   tt0000001	2	nm0005690	director	\N	\N
   ```
   - characters (string) - It actually looks like "['first role', 'second role', 'etc']" or "\\N".
-  - example:```
+  - example:
+  ```
   tconst	ordering	nconst	category	job	characters
   tt1834344	1	nm1129362	self	\N	["Self - Correspondent (2002-2004)","Co-Host (2004-)"]
   ```
@@ -153,11 +157,11 @@ ____
 ## Data cohesion
 The database consist of seven files which contained tables, among which:
 - The **name.basics** table contains information about the name/person and references to the titles in which the person is known (knownForTitles field).
-- The tables **title.ratings, title.episode, title.crew, title.basics, title.principals and title.akas**,
+- The tables **title.basics, title.crew, title.episode, title.ratings, title.principals** and **title.akas**,
   are linked by external ID(tconst) and contain information about the titles.
     - The table **title.basics** contains basic information about the title.
-    - The table **title.episode** contains the tconst of the episodes, which refer to the parent ID of the title(parentTconst).
     - The table **title.crew** contains the tconst of the titles that refer to the array of directors of the table **name.basics**, that worked on them.
+    - The table **title.episode** contains the tconst of the episodes, which refer to the parent ID of the title(parentTconst).
     - The table **title.principals** contains external ID(tconst) that may be duplicated,
       because the table fields refer to different name/person(nconst) of the table **name.basics**.
     - The table **title.akas** contains external ID(tconst) which may be duplicated,
