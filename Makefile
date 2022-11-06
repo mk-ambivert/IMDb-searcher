@@ -1,17 +1,19 @@
 BINARY_NAME=imdb-searcher
 PROGRAM_TYPE=cmd
+OUTPUT_PATH=bin/${BINARY_NAME}
 TEST_COVERAGE=coverage.out
 
-build_and_run: build run
+export PROJECT_DIR=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
+build_and_run: build run
+	
 build:
-	go build -o bin/${BINARY_NAME} ${PROGRAM_TYPE}/${BINARY_NAME}/main.go
+	go build -o ${OUTPUT_PATH} ${PROGRAM_TYPE}/${BINARY_NAME}/main.go
 
 run:
-	./bin/${BINARY_NAME}
-
+	./${OUTPUT_PATH}
+	
 clean:
-	go clean
 	rm -rf ./bin
 	rm -rf ${TEST_COVERAGE}
 
