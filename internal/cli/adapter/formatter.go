@@ -2,6 +2,7 @@ package adapter
 
 import (
 	"github.com/IMDb-searcher/internal/db/accessor"
+	"github.com/IMDb-searcher/internal/logger"
 )
 
 type IFormatter interface {
@@ -15,15 +16,17 @@ type formatter struct {
 	IFormatter
 
 	accessor accessor.IDBAccessor
+	log      logger.ILogger
 }
 
-func New() (IFormatter, error) {
-	accessor, err := accessor.New()
+func New(logger logger.ILogger) (IFormatter, error) {
+	accessor, err := accessor.New(logger)
 	if err != nil {
 		return nil, err
 	}
 	return &formatter{
 		accessor: accessor,
+		log:      logger,
 	}, nil
 }
 

@@ -1,5 +1,7 @@
 package accessor
 
+import "github.com/IMDb-searcher/internal/logger"
+
 type IFormat interface {
 	YAML() (string, error)
 }
@@ -15,11 +17,13 @@ type dBAccessor struct {
 	dbTables map[string][]string
 
 	IDBAccessor
+	log logger.ILogger
 }
 
-func New() (IDBAccessor, error) {
+func New(logger logger.ILogger) (IDBAccessor, error) {
 	accessor := &dBAccessor{
 		dbTables: make(map[string][]string),
+		log:      logger,
 	}
 	err := accessor.loadDB()
 	if err != nil {

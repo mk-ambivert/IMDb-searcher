@@ -1,9 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"github.com/IMDb-searcher/internal/cli"
+	"github.com/IMDb-searcher/internal/logger"
 )
 
 func main() {
-	fmt.Println("Hello world!")
+	log := logger.GetLogger()
+
+	ui, err := cli.New(log)
+	if err != nil {
+		log.Panic(err)
+	}
+	ui.Run()
 }

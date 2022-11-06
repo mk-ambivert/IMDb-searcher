@@ -7,6 +7,7 @@ type IUnpacker interface {
 }
 
 type unpacker struct {
+	log logger.ILogger
 }
 
 func (u *unpacker) removeExtractedFiles() {
@@ -26,5 +27,5 @@ func (u *unpacker) UnGzipFiles() error {
 }
 
 func New(logger logger.ILogger) (IUnpacker, error) {
-	return &unpacker{}, nil
+	return &unpacker{log: logger}, nil
 }
