@@ -8,7 +8,7 @@ import (
 )
 
 func TestRemoveFile(t *testing.T) {
-	fileName := "test_files/removaldir/test.txt"
+	fileName := "test_files/removingdir/test.txt"
 	file, err := os.Create(fileName)
 	if err != nil {
 		assert.NoError(t, err)
@@ -26,7 +26,7 @@ func TestRemoveFile(t *testing.T) {
 }
 
 func TestRemoveFilesInDir(t *testing.T) {
-	dirPath := "test_files/removaldir/"
+	dirPath := "test_files/removingdir/"
 	fileNames := []string{
 		"1.txt",
 		"2.txt",

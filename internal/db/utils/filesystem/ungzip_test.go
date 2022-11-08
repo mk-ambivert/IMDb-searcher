@@ -7,8 +7,8 @@ import (
 )
 
 func TestUnGzip(t *testing.T) {
-	pathToPackedFile := "./test_db_files/compressed/name.basics.tsv.gz"
-	pathToUnpackedFile := "./test_db_files/name.basics.tsv"
+	pathToPackedFile := "test_files/compressed/name.basics.tsv.gz"
+	pathToUnpackedFile := "test_files/name.basics.tsv"
 	expected := []string{
 		`nconst	primaryName	birthYear	deathYear	primaryProfession	knownForTitles`,
 		`nm0000001	Fred Astaire	1905	1985	soundtrack,actor,miscellaneous	tt0053137,tt0031983,tt0050419,tt0072308`,

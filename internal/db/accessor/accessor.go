@@ -6,10 +6,10 @@ import (
 
 	"github.com/IMDb-searcher/internal/config"
 	"github.com/IMDb-searcher/internal/db/accessor/utils"
+	"github.com/IMDb-searcher/internal/db/accessor/utils/search"
 	"github.com/IMDb-searcher/internal/db/models"
 	"github.com/IMDb-searcher/internal/db/unpacker"
 	"github.com/IMDb-searcher/internal/db/utils/filesystem"
-	"github.com/IMDb-searcher/internal/db/utils/search"
 	"github.com/IMDb-searcher/internal/logger"
 )
 
