@@ -35,12 +35,19 @@ func Init() {
 	})
 
 	projectDir := os.Getenv("PROJECT_DIR")
-	logsFileName := "logs/logfile.log"
-	pathToLogs := filepath.Join(projectDir, logsFileName)
+	folderName := "logs"
+	pathToLogsDir := filepath.Join(projectDir, folderName)
 
-	file, err := os.OpenFile(pathToLogs, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	err := os.MkdirAll(pathToLogsDir, 0644)
 	if err != nil {
-		msg := errors.New("Failed to initalize logging" + err.Error())
+		msg := errors.New("failed to initialize log dir:" + err.Error())
+		panic(msg)
+	}
+
+	pathToLogFile := filepath.Join(pathToLogsDir, "log.log")
+	file, err := os.OpenFile(pathToLogFile, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		msg := errors.New("failed to initialize logging:" + err.Error())
 		panic(msg)
 	} else {
 		logger.SetOutput(file)
