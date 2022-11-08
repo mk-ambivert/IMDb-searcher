@@ -3,10 +3,13 @@ package unpacker
 import (
 	"errors"
 	"os"
+	"path"
 
 	"github.com/IMDb-searcher/internal/config"
 	"github.com/IMDb-searcher/internal/db/utils/filesystem"
 	"github.com/IMDb-searcher/internal/logger"
+
+	e "github.com/IMDb-searcher/internal/errors"
 )
 
 type IUnpacker interface {
@@ -32,10 +35,15 @@ func (u *unpacker) extractFiles() error {
 	pathToPackedDBFiles := u.config.GetDBPathToPackedFiles()
 	pathToUnpackedDBFiles := u.config.GetDBPathToUnpackedFiles()
 	dbFileNames := u.config.GetDBFileNames()
+	err := os.MkdirAll(pathToUnpackedDBFiles, os.ModeDir)
+	if err != nil {
+		return err
+	}
 
 	for i := 0; i < len(dbFileNames); i++ {
-		from := pathToPackedDBFiles + dbFileNames[i]
-		to := pathToUnpackedDBFiles + dbFileNames[i]
+		packageType := ".gz"
+		from := path.Join(pathToPackedDBFiles, dbFileNames[i]+packageType)
+		to := path.Join(pathToUnpackedDBFiles, dbFileNames[i])
 
 		err := filesystem.UnGzip(from, to)
 		if err != nil {
@@ -47,12 +55,12 @@ func (u *unpacker) extractFiles() error {
 	return nil
 }
 
-func (u *unpacker) verifyFiles() error {
+func (u *unpacker) verifyUnpackedFiles() error {
 	pathToUnpackedDBFiles := u.config.GetDBPathToUnpackedFiles()
 	dbFileNames := u.config.GetDBFileNames()
 
 	for i := 0; i < len(dbFileNames); i++ {
-		filePath := pathToUnpackedDBFiles + dbFileNames[i]
+		filePath := path.Join(pathToUnpackedDBFiles, dbFileNames[i])
 		if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) {
 			u.log.Error("verifying error:", err)
 			return err
@@ -71,20 +79,25 @@ func (u *unpacker) verifyFiles() error {
 }
 
 func (u *unpacker) UnGzipFiles() error {
-	err := u.extractFiles()
-	if err != nil {
-		u.log.Error(err)
-
-		u.removeExtractedFiles()
-		return err
+	err := u.verifyUnpackedFiles()
+	if err == nil {
+		return nil // All is well, the base is already unpacked
 	}
 
-	err = u.verifyFiles()
+	err = u.extractFiles()
 	if err != nil {
 		u.log.Error(err)
 
 		u.removeExtractedFiles()
-		return err
+		return &e.ErrDataBaseUnpacking{}
+	}
+
+	err = u.verifyUnpackedFiles()
+	if err != nil {
+		u.log.Error(err)
+
+		u.removeExtractedFiles()
+		return &e.ErrDataBaseUnpacking{}
 	}
 
 	return nil
