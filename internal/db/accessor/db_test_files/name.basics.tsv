@@ -1,0 +1,6 @@
+nconst	primaryName	birthYear	deathYear	primaryProfession	knownForTitles
+nm0000001	Fred Astaire	1905	1985	soundtrack,actor,miscellaneous	tt0000001,tt0000002,tt0000003,tt0000004
+nm0000002	Lauren Bacall	1930	2020	actress,writer	tt0000004,tt0000003,tt0000001,tt0000002
+nm0000003	Brigitte Bardot	2000	\N	actress,director,producer	tt0000003,tt0000002,tt0000001,tt0000004
+nm0000004	John Belushi	1999	1982	actor,editor,writer tt0000003,tt0000002
+nm0000006	Ingmar Bergman	1984	2022	writer,director,actor	tt0000001,tt0000002,tt0000003,tt0000005

@@ -1,0 +1,12 @@
+DataBaseInfo:
+  DatabasePaths:
+    pathToPackedDBFiles:
+    pathToUnpackedDBFiles:
+  DatabaseFileNames:
+  - "name.basics.tsv"
+  - "title.basics.tsv"
+  - "title.akas.tsv"
+  - "title.crew.tsv"
+  - "title.principals.tsv"
+  - "title.ratings.tsv"
+  - "title.episode.tsv"
