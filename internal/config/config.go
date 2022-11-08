@@ -1,7 +1,9 @@
 package config
 
 import (
+	"os"
 	"path"
+	"path/filepath"
 	"sync"
 
 	"github.com/IMDb-searcher/internal/logger"
@@ -44,10 +46,13 @@ var once sync.Once
 var config *Config
 
 func GetConfig(log logger.ILogger) IConfig {
-	config = &Config{}
-
 	once.Do(func() {
-		err := cleanenv.ReadConfig("config.yml", config)
+		projectDir := os.Getenv("PROJECT_DIR")
+		configName := "config.yml"
+		pathConfig := filepath.Join(projectDir, configName)
+
+		config = &Config{}
+		err := cleanenv.ReadConfig(pathConfig, config)
 		if err != nil {
 			log.Error(err)
 			help, _ := cleanenv.GetDescription(config, nil)

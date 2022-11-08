@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"testing"
 
 	mock "github.com/IMDb-searcher/internal/logger/mock"
@@ -31,6 +32,8 @@ func TestGetConfig(t *testing.T) {
 	defer ctrl.Finish()
 
 	log := mock.NewMockILogger(ctrl)
+	err := os.Setenv("PROJECT_DIR", "")
+	assert.NoError(t, err)
 
 	cfg := GetConfig(log)
 	assert.Equal(t, expected, cfg)
