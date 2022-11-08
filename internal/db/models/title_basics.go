@@ -94,28 +94,3 @@ func CreateTitlesBasics(titles []*TitleBasics) *TitlesBasics {
 		Titles: titles,
 	}
 }
-
-type TitleBasicsWithCrew struct {
-	Title TitleBasics
-	Cast  TitleCrew
-}
-
-func (t *TitleBasicsWithCrew) YAML() (string, error) {
-	model, err := yaml.Marshal(t)
-	if err != nil {
-		return "", err
-	}
-	return string(model), nil
-}
-
-func CreateTitleBasicsWithCrew(tableRow string, crew TitleCrew) (*TitleBasicsWithCrew, error) {
-	titleModel, err := CreateTitleBasics(tableRow)
-	if err != nil {
-		return nil, err
-	}
-
-	return &TitleBasicsWithCrew{
-		Title: *titleModel,
-		Cast:  crew,
-	}, nil
-}

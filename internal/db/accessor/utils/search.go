@@ -1,9 +1,11 @@
-package search
+package utils
 
 import (
 	"errors"
 	"regexp"
 	"strings"
+
+	e "github.com/IMDb-searcher/internal/errors"
 )
 
 // TO DO: it might make sense to rename the input rows[] to table[]
@@ -23,7 +25,7 @@ func GetRowByUniqueId(rows []string, id string) (string, error) {
 		}
 	}
 
-	return "", errors.New("Row with the required Index are absent")
+	return "", &e.ErrNotFound{}
 }
 
 // GetRowByField search for the first row that contains the same field value as the one searched for.
@@ -38,7 +40,7 @@ func GetRowByField(rows []string, fieldTitle, fieldValue string) (string, error)
 		}
 	}
 
-	return "", errors.New("Row with the required field are absent")
+	return "", &e.ErrNotFound{}
 }
 
 // GetRowsById search for the rows with the index searched for among the rows that may use the same ids.
@@ -53,11 +55,14 @@ func GetRowsById(rows []string, id string) ([]string, error) {
 			foundRows = append(foundRows, row)
 			flag = true
 		} else if flag {
-			return foundRows, nil
+			break
 		}
 	}
+	if foundRows != nil {
+		return foundRows, nil
+	}
 
-	return nil, errors.New("rows with the required id are absent")
+	return nil, &e.ErrNotFound{}
 }
 
 // GetColumIndexInRow search for the index of the column in the row (fields are separated by tabulation).
@@ -92,7 +97,7 @@ func verifyId(id string) error {
 	// ^nm\d+$ has the same meaning as the left part of the expression, but for the prefix nm.
 	rgx := regexp.MustCompile(`^tt\d+$|^nm\d+$`)
 	if !rgx.Match([]byte(id)) {
-		return errors.New("Incorrect id")
+		return errors.New("incorrect id")
 	}
 	return nil
 }

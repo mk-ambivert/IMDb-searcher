@@ -1,4 +1,4 @@
-package search
+package utils
 
 import (
 	"testing"
@@ -10,7 +10,6 @@ var uniqueIdTable = []string{
 	`tconst	titleType	primaryTitle	originalTitle	isAdult	startYear	endYear	runtimeMinutes	genres`,
 	`tt0000001	short	Carmencita	Carmencita	0	1894	\N	1	Documentary,Short`,
 	`tt0000002	short	Le clown et ses chiens	Le clown et ses chiens	0	1892	\N	5	Animation,Short`,
-	`tt0000003	short	Pauvre Pierrot	Pauvre Pierrot	0	1892	\N	4	Animation,Comedy,Romance`,
 	`tt0000004	short	Un bon bock	Un bon bock	0	1892	\N	12	Animation,Short`,
 	`tt0000005	short	Blacksmith Scene	Blacksmith Scene	0	1893	\N	1	Comedy,Short`,
 	`tt0000006	short	Chinese Opium Den	Chinese Opium Den	0	1894	\N	1	Short`,
@@ -40,6 +39,7 @@ func TestGetRowByUniqueId(t *testing.T) {
 
 	row, err = GetRowByUniqueId(uniqueIdTable, nonexistentRowId)
 	assert.Error(t, err)
+	assert.Equal(t, "", row)
 }
 
 func TestGetRowByField(t *testing.T) {
@@ -71,6 +71,7 @@ func TestGetRowsById(t *testing.T) {
 
 	rows, err = GetRowsById(multyIdTable, nonexistentRowId)
 	assert.Error(t, err)
+	assert.Nil(t, rows)
 }
 
 func TestGetColumnIndexInRow(t *testing.T) {
@@ -97,7 +98,7 @@ func TestGetValueByFieldIndexInRow(t *testing.T) {
 	assert.Equal(t, expected, value)
 }
 
-func TestValidateId(t *testing.T) {
+func TestVerifyId(t *testing.T) {
 	assert.NoError(t, verifyId("nm1234000"))
 	assert.NoError(t, verifyId("tt0000005"))
 
