@@ -69,7 +69,7 @@ func (d *dBAccessor) loadDB() error {
 	return nil
 }
 
-func (d *dBAccessor) findRelatedTitlesByNameBasicsRow(nameBasicsRow string) ([]models.TitleBasics, error) {
+func (d *dBAccessor) findRelatedTitlesByNameBasicsRow(nameBasicsRow string) ([]*models.TitleBasics, error) {
 	titleBasicsTable := d.dbTables["title.basics.tsv"]
 
 	// nconst	primaryName	birthYear	deathYear	primaryProfession	knownForTitles
@@ -78,7 +78,7 @@ func (d *dBAccessor) findRelatedTitlesByNameBasicsRow(nameBasicsRow string) ([]m
 
 	titlesIds := strings.Split(knownForTitlesField, ",") // slice of titles indexes
 
-	var titles []models.TitleBasics
+	var titles []*models.TitleBasics
 	for _, titleId := range titlesIds {
 		titleRow, err := search.GetRowByUniqueId(titleBasicsTable, titleId)
 		if err != nil {
@@ -92,17 +92,17 @@ func (d *dBAccessor) findRelatedTitlesByNameBasicsRow(nameBasicsRow string) ([]m
 			return nil, err
 		}
 
-		titles = append(titles, *title)
+		titles = append(titles, title)
 	}
 
 	return titles, nil
 }
 
-func (d *dBAccessor) findPersonsByTheirIdsField(idsField string) ([]models.NameBasicsMain, error) {
+func (d *dBAccessor) findPersonsByTheirIdsField(idsField string) ([]*models.NameBasicsMain, error) {
 	nameBasicsTable := d.dbTables["name.basics.tsv"]
 	ids := strings.Split(idsField, ",")
 
-	var perosns []models.NameBasicsMain
+	var perosns []*models.NameBasicsMain
 	for _, id := range ids {
 		if id == `\N` {
 			continue
@@ -115,7 +115,7 @@ func (d *dBAccessor) findPersonsByTheirIdsField(idsField string) ([]models.NameB
 		if err != nil {
 			return nil, err
 		}
-		perosns = append(perosns, *nameBasicsModel)
+		perosns = append(perosns, nameBasicsModel)
 	}
 	return perosns, nil
 }
@@ -224,7 +224,7 @@ func (d *dBAccessor) FindAllTitlesBySpecificYear(year string) (IFormat, error) {
 	startYearId := 5
 	endYearId := 6
 
-	var titles []models.TitleBasics
+	var titles []*models.TitleBasics
 	for i := 1; i < len(titleBasicsTable); i++ {
 		row := titleBasicsTable[i]
 		startyear := search.GetValueByFieldIndexInRow(row, startYearId)
@@ -236,7 +236,7 @@ func (d *dBAccessor) FindAllTitlesBySpecificYear(year string) (IFormat, error) {
 					d.log.Error(err)
 					return nil, err
 				}
-				titles = append(titles, *title)
+				titles = append(titles, title)
 			}
 		}
 	}

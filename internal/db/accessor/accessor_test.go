@@ -42,7 +42,7 @@ func TestFindAllTitlesBySpecificYear(t *testing.T) {
 	log := mock.NewMockILogger(ctrl)
 	titleRow := `tt0000001	short	Carmencita	Carmencita	0	1894	\N	1	Documentary,Short`
 	title, _ := models.CreateTitleBasics(titleRow)
-	expected := models.CreateTitlesBasics([]models.TitleBasics{*title})
+	expected := models.CreateTitlesBasics([]*models.TitleBasics{title})
 	year := "1894"
 
 	accessor, err := New(log)
@@ -78,7 +78,7 @@ func TestFindInfoByPersonName(t *testing.T) {
 	title2, _ := models.CreateTitleBasics(`tt0000002	short	Le clown et ses chiens	Le clown et ses chiens	0	1892	\N	5	Animation,Short`)
 	title3, _ := models.CreateTitleBasics(`tt0000003	short	Pauvre Pierrot	Pauvre Pierrot	0	1892	\N	4	Animation,Comedy,Romance`)
 	title5, _ := models.CreateTitleBasics(`tt0000005	tvEpisode	Spécial Pétain - Laval	Spécial Pétain - Laval	0	1993	\N	\N	Documentary,Talk-Show`)
-	titles := []models.TitleBasics{*title1, *title2, *title3, *title5}
+	titles := []*models.TitleBasics{title1, title2, title3, title5}
 
 	titlesBasics := models.CreateTitlesBasics(titles)
 	nameBasicsRow := `nm0000006	Ingmar Bergman	1984	2022	writer,director,actor	tt0000001,tt0000002,tt0000003,tt0000005`
